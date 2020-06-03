@@ -10,25 +10,24 @@ require_once __DIR__ . '/route_helpers.php';
  * Verbinding maken met de database
  * @return \PDO
  */
-function dbConnect() {
+function dbConnect()
+{
 
 	$config = get_config('DB');
 
 	try {
-		$dsn = 'mysql:host=' . $config('HOSTNAME') . ';dbname=' . $config['DATABASE'] . ';charset=utf8';
+		$dsn = 'mysql:host=' . $config['HOSTNAME'] . ';dbname=' . $config['DATABASE'] . ';charset=utf8';
 
-		$connection = new PDO( $dsn, $config['USER'], $config['PASSWORD'] );
+		$connection = new PDO($dsn, $config['USER'], $config['PASSWORD']);
 
-		$connection->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
-		$connection->setAttribute( PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC );
+		$connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+		$connection->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
 
 		return $connection;
-
-	} catch ( \PDOException $e ) {
+	} catch (\PDOException $e) {
 		echo 'Fout bij maken van database verbinding: ' . $e->getMessage();
 		exit;
 	}
-
 }
 
 /**
@@ -39,29 +38,42 @@ function dbConnect() {
  *
  * @return string
  */
-function site_url( $path = '' ) {
-	return get_config( 'BASE_URL' ) . $path;
+function site_url($path = '')
+{
+	return get_config('BASE_URL') . $path;
 }
 
-function get_config( $name ) {
+function get_config($name)
+{
 	$config = require __DIR__ . '/config.php';
-	$name = strtoupper( $name );
+	$name = strtoupper($name);
 
-	if ( isset( $config[ $name ] ) ) {
+	if (isset($config[$name])) {
 		return $config[$name];
 	}
 
-	throw new \InvalidArgumentException( 'Er bestaat geen instelling met de key: ' . $name );
+	throw new \InvalidArgumentException('Er bestaat geen instelling met de key: ' . $name);
 }
 
 /**
  * Hier maken we de template engine en vertellen de template engine waar de templates/views staan
  * @return \League\Plates\Engine
  */
-function get_template_engine() {
+function get_template_engine()
+{
 
-	$templates_path = get_config( 'PRIVATE' ) . '/views';
+	$templates_path = get_config('PRIVATE') . '/views';
 
-	return new League\Plates\Engine( $templates_path );
+	return new League\Plates\Engine($templates_path);
+}
 
+function current_route_is($name)
+{
+	$route = request()->getLoadedRoute();
+
+	if ($route) {
+		return $route->hasName($name);
+	}
+
+	return false;
 }

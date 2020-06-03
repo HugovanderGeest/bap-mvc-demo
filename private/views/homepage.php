@@ -11,11 +11,11 @@
 
 <body>
     <header>
-        <h1>Homepage</h1>
+
     </header>
     <main>
+
         <p>
-            Welkom op de homepage
         </p>
         <p>
             Je ziet deze pagina omdat:

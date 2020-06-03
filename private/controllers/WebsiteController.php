@@ -10,14 +10,18 @@ namespace Website\Controllers;
  * Geeft de gegevens aan de "view" laag (HTML template) om weer te geven
  *
  */
-class WebsiteController {
+class WebsiteController
+{
 
-	public function home() {
+	public function home()
+	{
+		echo "hugo van der Geest<br><br>";
+		echo "hier komt de homepage<br>voor regiestratie ga naar<br><br>";
 
-		echo "Welkom op de homepage!";
+		echo "http://localhost/covid/bap-mvc-demo/public/registreren/";
 
-//		$template_engine = get_template_engine();
-//		echo $template_engine->render('homepage');
+		//		$template_engine = get_template_engine();
+		//		echo $template_engine->render('homepage');
 
 	}
 }
