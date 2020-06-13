@@ -46,12 +46,18 @@ class RegistrationController
 
 			if ($statement->rowCount() === 0) {
 
-				$sql = "INSERT INTO `gebruiker` (`email`, `wachtwoord`) VALUEs (:email, :wachtwoord)";
+				// verificatie code 
+				$code = md5(uniqid(rand(), true));
+
+
+				// heb hier `code` toegevoegd 
+				$sql = "INSERT INTO `gebruiker` (`email`, `wachtwoord`, `code`) VALUEs (:email, :wachtwoord, :code)";
 				$statement = $connection->prepare($sql);
 				$safe_password = password_hash($wachtwoord, PASSWORD_DEFAULT);
 				$params = [
 					'email' => $email,
-					'wachtwoord' => $safe_password
+					'wachtwoord' => $safe_password,
+					'code' => $code
 				];
 				$statement->execute($params);
 				$bedanktURL = url('register.thankyou');
@@ -69,5 +75,25 @@ class RegistrationController
 	{
 		$template_engine = get_template_engine();
 		echo $template_engine->render("register_thankyou");
+	}
+
+	public function confirmRegistration($code)
+	{
+
+		//code lezen 
+		$user = getUserByCode($code);
+		if ($user === false) {
+			echo "al bevestigd of ombekend";
+			exit;
+		}
+
+		// gebruiker activeren 
+
+		confirmAccount($code);
+
+
+		// doorsturen naar login
+		// stuur confermatie email
+		sendConfirmationEmail($result['data']['email'], $code);
 	}
 }

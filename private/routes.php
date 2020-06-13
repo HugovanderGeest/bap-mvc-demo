@@ -14,7 +14,12 @@ SimpleRouter::group(['prefix' => site_url()], function () {
 	SimpleRouter::get('/', 'WebsiteController@home')->name('home');
 	SimpleRouter::get('/registreren', 'RegistrationController@registrationForm')->name('register.form');
 	SimpleRouter::post('/registreren/verwerken', 'RegistrationController@handleRegistrationForm')->name('register.handle');
-	SimpleRouter::get('/registreren/bedankt', 'RegistrationController@registrationThankYou')->name('register.thankyou');
+	SimpleRouter::get('registreren/bevestigen/{code}', 'RegistrationController@registrationThankYou')->name('register.thankyou');
+
+	// hier 2 simple router toevegoevgd 
+	SimpleRouter::get('/stuur-test-email', 'EmailController@sendTestEmail')->name('email.test');
+	SimpleRouter::get('/registreren/bevestgen/{code}', 'RegistratiieonController@confirmRegistration')->name('register.name');
+
 
 	SimpleRouter::get('/not-found', function () {
 		http_response_code(404);
